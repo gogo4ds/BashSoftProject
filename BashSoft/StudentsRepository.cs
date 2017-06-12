@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace BashSoft
 {
@@ -28,13 +29,13 @@ namespace BashSoft
             }   
         }
 
-        public static void InitializeData()
+        public static void InitializeData(string fileName)
         {
             if (!IsDataInitialized)
             {
                 OutputWriter.WriteMessageOnNewLine("Reading data...");
                 studentsByCorse = new Dictionary<string, Dictionary<string, List<int>>>();
-                ReadData();
+                ReadData(fileName);
             }
             else
             {
@@ -72,33 +73,44 @@ namespace BashSoft
             return false;
         }
 
-        private static void ReadData()
+        private static void ReadData(string fileName)
         {
-            string input = Console.ReadLine();
+            string path = SessionData.CurrentPath + "\\" + fileName;
 
-            while (!string.IsNullOrEmpty(input))
+            if (File.Exists(path))
             {
-                string[] tokens = input.Split(' ');
-                string course = tokens[0];
-                string student = tokens[1];
-                int mark = int.Parse(tokens[2]);
+                string[] allInputLines = File.ReadAllLines(path);
 
-                if (!studentsByCorse.ContainsKey(course))
+                foreach (string line in allInputLines)
                 {
-                    studentsByCorse.Add(course, new Dictionary<string, List<int>>());
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        string[] tokens = line.Split();
+                        string course = tokens[0];
+                        string student = tokens[1];
+                        int mark = int.Parse(tokens[2]);
+
+                        if (!studentsByCorse.ContainsKey(course))
+                        {
+                            studentsByCorse.Add(course, new Dictionary<string, List<int>>());
+                        }
+
+                        if (!studentsByCorse[course].ContainsKey(student))
+                        {
+                            studentsByCorse[course].Add(student, new List<int>());
+                        }
+
+                        studentsByCorse[course][student].Add(mark);
+                    }
                 }
 
-                if (!studentsByCorse[course].ContainsKey(student))
-                {
-                    studentsByCorse[course].Add(student, new List<int>());
-                }
-
-                studentsByCorse[course][student].Add(mark);
-                input = Console.ReadLine();         
+                IsDataInitialized = true;
+                OutputWriter.WriteMessageOnNewLine("Data read!");
             }
-
-            IsDataInitialized = true;
-            OutputWriter.WriteMessageOnNewLine("Data read!");
+            else
+            {
+                OutputWriter.DisplayException(ExceptionMessages.InvalidPath);
+            }           
         }
     }
 }
