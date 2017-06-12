@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace BashSoft
 {
@@ -17,7 +18,7 @@ namespace BashSoft
             }
         }
 
-        public static void GetAllStudentsFromCOurse(string courseName)
+        public static void GetAllStudentsFromCourse(string courseName)
         {
             if (IsQueryForCoursePossible(courseName))
             {
@@ -81,15 +82,17 @@ namespace BashSoft
             {
                 string[] allInputLines = File.ReadAllLines(path);
 
+                var pattern = @"([A-Z][a-zA-Z#+]*_[A-Z][a-z]{2}_\d{4})\s+([A-Z][a-z]{0,3}\d{2}_\d{2,4})\s+(\d+)";
+                Regex regex = new Regex(pattern);
+
                 foreach (string line in allInputLines)
                 {
-                    if (!string.IsNullOrEmpty(line))
+                    if (string.IsNullOrEmpty(line) || !regex.IsMatch(line)) continue;
+                    Match currentMatch = regex.Match(line);
+                    string course = currentMatch.Groups[1].Value;
+                    string student = currentMatch.Groups[2].Value;
+                    if (int.TryParse(currentMatch.Groups[3].Value, out int studentScore) && studentScore <= 100 && studentScore >= 0)
                     {
-                        string[] tokens = line.Split();
-                        string course = tokens[0];
-                        string student = tokens[1];
-                        int mark = int.Parse(tokens[2]);
-
                         if (!studentsByCorse.ContainsKey(course))
                         {
                             studentsByCorse.Add(course, new Dictionary<string, List<int>>());
@@ -100,7 +103,7 @@ namespace BashSoft
                             studentsByCorse[course].Add(student, new List<int>());
                         }
 
-                        studentsByCorse[course][student].Add(mark);
+                        studentsByCorse[course][student].Add(studentScore);
                     }
                 }
 

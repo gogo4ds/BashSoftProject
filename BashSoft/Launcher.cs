@@ -8,7 +8,7 @@
             //IOManager.TraverseDirectory(0);
 
             //StudentsRepository.InitializeData();
-            //StudentsRepository.GetAllStudentsFromCOurse("Unity");
+            //StudentsRepository.GetAllStudentsFromCourse("Unity");
 
             //IOManager.CreateDirectoryInCurrentFolder("*2");
             InputReader.StartReadingCommands();

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 
 namespace BashSoft
 {
@@ -38,6 +37,9 @@ namespace BashSoft
                 case "help":
                     TryGetHelp(data);
                     break;
+                case "show":
+                    TryShowWantedData(data);
+                    break;
                 case "filter":
                     //TODO:
                     break;
@@ -57,7 +59,30 @@ namespace BashSoft
                     OutputWriter.DisplayException(string.Format(ExceptionMessages.InvalidCommand, input));
                     break;
             }
-        } 
+        }
+
+        private static void TryShowWantedData(string[] data)
+        {
+            switch (data.Length)
+            {
+                case 2:
+                {
+                    string courseName = data[1];
+                    StudentsRepository.GetAllStudentsFromCourse(courseName);
+                }
+                    break;
+                case 3:
+                {
+                    string courseName = data[1];
+                    string username = data[2];
+                    StudentsRepository.GetStudentScoresFromCourse(courseName, username);
+                }
+                    break;
+                default:
+                    OutputWriter.DisplayException(string.Format(ExceptionMessages.InvalidCommandParametersCount, data[0]));
+                    break;
+            }
+        }
 
         private static void TryReadDatabaseFromFile(string[] data)
         {
