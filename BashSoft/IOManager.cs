@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace BashSoft
@@ -24,17 +25,24 @@ namespace BashSoft
 
                 OutputWriter.WriteMessageOnNewLine($"{new string('-', identation)}{currentPath}");
 
-                foreach (var file in Directory.GetFiles(currentPath))
+                try
                 {
-                    int indexOfLastSlash = file.LastIndexOf('\\');
-                    string fileName = file.Substring(indexOfLastSlash);
-                    OutputWriter.WriteMessageOnNewLine(new string('-', indexOfLastSlash) + fileName);
-                }
+                    foreach (var file in Directory.GetFiles(currentPath))
+                    {
+                        int indexOfLastSlash = file.LastIndexOf('\\');
+                        string fileName = file.Substring(indexOfLastSlash);
+                        OutputWriter.WriteMessageOnNewLine(new string('-', indexOfLastSlash) + fileName);
+                    }
 
-                foreach (var dirPath in Directory.GetDirectories(currentPath))
-                {
-                    subfolders.Enqueue(dirPath);
+                    foreach (var dirPath in Directory.GetDirectories(currentPath))
+                    {
+                        subfolders.Enqueue(dirPath);
+                    }
                 }
+                catch (UnauthorizedAccessException)
+                {
+                    Console.WriteLine(ExceptionMessages.UnauthorizedAccessExceptionMessage);
+                }  
             }
         }
 
@@ -42,10 +50,17 @@ namespace BashSoft
         {
             if (relativePath == "..")
             {
-                string currentPath = SessionData.CurrentPath;
-                int indexOfLastSlash = currentPath.LastIndexOf('\\');
-                string newPath = currentPath.Substring(0, indexOfLastSlash);
-                SessionData.CurrentPath = newPath;
+                try
+                {
+                    string currentPath = SessionData.CurrentPath;
+                    int indexOfLastSlash = currentPath.LastIndexOf('\\');
+                    string newPath = currentPath.Substring(0, indexOfLastSlash);
+                    SessionData.CurrentPath = newPath;
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    OutputWriter.DisplayException(ExceptionMessages.UnableToGoHigherInThePartitionHierarchy);
+                }            
             }
             else
             {
@@ -55,7 +70,7 @@ namespace BashSoft
             }
         }
 
-        private static void ChangeCurrentDirectoryAbsolute(string absolutePath)
+        public static void ChangeCurrentDirectoryAbsolute(string absolutePath)
         {
             if (!Directory.Exists(absolutePath))
             {
@@ -69,7 +84,15 @@ namespace BashSoft
         public static void CreateDirectoryInCurrentFolder(string name)
         {
             string path = GetCurrentDirectoryPath() + "\\" + name;
-            Directory.CreateDirectory(path);
+            try
+            {
+                Directory.CreateDirectory(path);
+            }
+            catch (ArgumentException)
+            {
+              OutputWriter.DisplayException(ExceptionMessages.ForbiddenSymbolsContainedInName);
+            }
+            
         }
 
         private static string GetCurrentDirectoryPath()

@@ -4,12 +4,13 @@
     {
         private static void Main()
         {
-            IOManager.TraverseDirectory(2);
+            //IOManager.ChangeCurrentDirectoryAbsolute(@"C:\Windows");
+            //IOManager.TraverseDirectory(0);
 
             //StudentsRepository.InitializeData();
             //StudentsRepository.GetAllStudentsFromCOurse("Unity");
 
-            //IOManager.CreateDirectoryInCurrentFolder("pesho");
+            IOManager.CreateDirectoryInCurrentFolder("*2");
         }
     }
 }
