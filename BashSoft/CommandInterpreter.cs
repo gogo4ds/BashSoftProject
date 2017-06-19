@@ -13,38 +13,38 @@ namespace BashSoft
             switch (command)
             {
                 case "open":
-                    TryOpenFile(data);
+                    TryOpenFile(input, data);
                     break;
                 case "mkdir":
                     TryCreateDirectory(data);
-                    TryOpenFile(data);
+                    TryOpenFile(input, data);
                     break;
                 case "ls":
-                    TryTraverseFolder(data);
+                    TryTraverseFolder(input, data);
                     break;
                 case "cmp":
-                    TryCompareFiles(data);
+                    TryCompareFiles(input, data);
                     break;
                 case "cdRel":
-                    TryChangePathRelatively(data);
+                    TryChangePathRelatively(input, data);
                     break;
                 case "cdAbs":
                     TryChangePathAbsolute(input, data);
                     break;
                 case "readDb":
-                    TryReadDatabaseFromFile(data);
+                    TryReadDatabaseFromFile(input, data);
                     break;
                 case "help":
-                    TryGetHelp(data);
+                    TryGetHelp(input, data);
                     break;
                 case "show":
-                    TryShowWantedData(data);
+                    TryShowWantedData(input, data);
                     break;
                 case "filter":
-                    TryFilterAndTake(data);
+                    TryFilterAndTake(input, data);
                     break;
                 case "order":
-                    //TODO:
+                    TryOrderAndTake(input, data);
                     break;
                 case "decOrder":
                     //TODO:
@@ -61,7 +61,45 @@ namespace BashSoft
             }
         }
 
-        private static void TryFilterAndTake(string[] data)
+        private static void TryOrderAndTake(string input, string[] data)
+        {
+            if (!IsCommandValidLenght(data, 5)) return;
+
+            string courseName = data[1];
+            string comparison = data[2].ToLower();
+            string takeCommand = data[3].ToLower();
+            string takeQuantity = data[4].ToLower();
+
+            TryParseParametersForOrderAndTake(takeCommand, takeQuantity, courseName, comparison);
+        }
+
+        private static void TryParseParametersForOrderAndTake(string takeCommand, string takeQuantity, string courseName, string comparison)
+        {
+            if (takeCommand == "take")
+            {
+                if (takeQuantity == "all")
+                {
+                    StudentsRepository.OrderAndTake(courseName, comparison);
+                }
+                else
+                {
+                    if (int.TryParse(takeQuantity, out int studentsToTake))
+                    {
+                        StudentsRepository.FilterAndTake(courseName, comparison, studentsToTake);
+                    }
+                    else
+                    {
+                        OutputWriter.DisplayException(ExceptionMessages.InvalidTakeQuantityParameter);
+                    }
+                }
+            }
+            else
+            {
+                OutputWriter.DisplayException(ExceptionMessages.InvalidTakeQuantityParameter);
+            }
+        }
+
+        private static void TryFilterAndTake(string input, string[] data)
         {
             if (!IsCommandValidLenght(data, 5)) return;
 
@@ -77,7 +115,21 @@ namespace BashSoft
         {
             if (takeCommand == "take")
             {
-                //TODO:
+                if (takeQuantity == "all")
+                {
+                    StudentsRepository.FilterAndTake(courseName, filter);
+                }
+                else
+                {
+                    if (int.TryParse(takeQuantity, out int studentsToTake))
+                    {
+                        StudentsRepository.FilterAndTake(courseName, filter, studentsToTake);
+                    }
+                    else
+                    {
+                        OutputWriter.DisplayException(ExceptionMessages.InvalidTakeQuantityParameter);
+                    }
+                }
             }
             else
             {
@@ -85,7 +137,7 @@ namespace BashSoft
             }
         }
 
-        private static void TryShowWantedData(string[] data)
+        private static void TryShowWantedData(string input, string[] data)
         {
             switch (data.Length)
             {
@@ -108,7 +160,7 @@ namespace BashSoft
             }
         }
 
-        private static void TryReadDatabaseFromFile(string[] data)
+        private static void TryReadDatabaseFromFile(string input, string[] data)
         {
             if (!IsCommandValidLenght(data, 2)) return;
 
@@ -128,7 +180,7 @@ namespace BashSoft
             OutputWriter.DisplayException(string.Format(ExceptionMessages.InvalidCommandParametersCount, data[0]));
         }
 
-        private static void TryChangePathRelatively(string[] data)
+        private static void TryChangePathRelatively(string input, string[] data)
         {
             if (!IsCommandValidLenght(data, 2)) return;
 
@@ -136,7 +188,7 @@ namespace BashSoft
             IOManager.ChangeCurrentDirectoryRelative(relPath);
         }
 
-        private static void TryCompareFiles(string[] data)
+        private static void TryCompareFiles(string input, string[] data)
         {
             if (!IsCommandValidLenght(data, 3)) return;
 
@@ -146,7 +198,7 @@ namespace BashSoft
             Tester.CompareContent(firstPath, secondPath);
         }
 
-        private static void TryTraverseFolder(string[] data)
+        private static void TryTraverseFolder(string input, string[] data)
         {
             if (data.Length < 2)
             {
@@ -177,7 +229,7 @@ namespace BashSoft
             IOManager.CreateDirectoryInCurrentFolder(folderName);
         }
 
-        private static void TryOpenFile(string[] data)
+        private static void TryOpenFile(string input, string[] data)
         {
             if (!IsCommandValidLenght(data, 2)) return;
 
@@ -203,7 +255,7 @@ namespace BashSoft
             return false;
         }
 
-        private static void TryGetHelp(string[] data)
+        private static void TryGetHelp(string input, string[] data)
         {
             if (!IsCommandValidLenght(data, 1)) return;
 
