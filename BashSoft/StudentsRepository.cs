@@ -44,6 +44,30 @@ namespace BashSoft
             }
         }
 
+        public static void FilterAndTake(string courseName, string givenFilter, int? studentsToTake = null)
+        {
+            if (!IsQueryForCoursePossible(courseName)) return;
+
+            if (studentsToTake == null)
+            {
+                studentsToTake = studentsByCorse[courseName].Count;
+            }
+
+            RepositoryFilters.FilterAndTake(studentsByCorse[courseName], givenFilter, studentsToTake.Value);
+        }
+
+        public static void OrderAndTake(string courseName, string comparison, int? studentsToTake = null)
+        {
+            if (!IsQueryForCoursePossible(courseName)) return;
+
+            if (studentsToTake == null)
+            {
+                studentsToTake = studentsByCorse[courseName].Count;
+            }
+
+            RepositorySorters.OrderAndTake(studentsByCorse[courseName], comparison, studentsToTake.Value);
+        }
+
         private static bool IsQueryForCoursePossible(string courseName)
         {
             if (IsDataInitialized)

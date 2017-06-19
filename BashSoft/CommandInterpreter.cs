@@ -41,7 +41,7 @@ namespace BashSoft
                     TryShowWantedData(data);
                     break;
                 case "filter":
-                    //TODO:
+                    TryFilterAndTake(data);
                     break;
                 case "order":
                     //TODO:
@@ -58,6 +58,30 @@ namespace BashSoft
                 default:
                     OutputWriter.DisplayException(string.Format(ExceptionMessages.InvalidCommand, input));
                     break;
+            }
+        }
+
+        private static void TryFilterAndTake(string[] data)
+        {
+            if (!IsCommandValidLenght(data, 5)) return;
+
+            string courseName = data[1];
+            string filter = data[2].ToLower();
+            string takeCommand = data[3].ToLower();
+            string takeQuantity = data[4].ToLower();
+
+            TryParseParametersForFilterAndTake(takeCommand, takeQuantity, courseName, filter);
+        }
+
+        private static void TryParseParametersForFilterAndTake(string takeCommand, string takeQuantity, string courseName, string filter)
+        {
+            if (takeCommand == "take")
+            {
+                //TODO:
+            }
+            else
+            {
+                OutputWriter.DisplayException(ExceptionMessages.InvalidTakeQuantityParameter);
             }
         }
 

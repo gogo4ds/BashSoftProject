@@ -5,15 +5,43 @@ namespace BashSoft
 {
     public static class RepositoryFilters
     {
-        public static void FilterAndTake(Dictionary<string, List<string>> wantedData, string wantedFilter, int studentsToTake)
+        public static void FilterAndTake(Dictionary<string, List<int>> wantedData, string wantedFilter, int studentsToTake)
         {
-            //TODO:
+            switch (wantedFilter.ToLower())
+            {
+                case "excellent":
+                    FilterAndTake(wantedData, ExcellentFilter, studentsToTake);
+                    break;
+                case "average":
+                    FilterAndTake(wantedData, AverageFilter, studentsToTake);
+                    break;
+                case "poor":
+                    FilterAndTake(wantedData, PoorFilter, studentsToTake);
+                    break;
+                default:
+                    OutputWriter.DisplayException(ExceptionMessages.InvalidStudentFilter);
+                    break;
+            }
         }
 
-        private static void FilterAndTake(Dictionary<string, List<string>> wantedData, Predicate<double> givenFilter,
+        private static void FilterAndTake(Dictionary<string, List<int>> wantedData, Predicate<double> givenFilter,
             int studentsToTake)
         {
-            //TODO:
+            int counterForPrinted = 0;
+            foreach (var usernamePoints in wantedData)
+            {
+                if (counterForPrinted == studentsToTake)
+                {
+                    break;
+                }
+
+                double averageMark = Average(usernamePoints.Value);
+                if (givenFilter(averageMark))
+                {
+                    OutputWriter.PrintStudent(usernamePoints);
+                    counterForPrinted++;
+                }
+            }
         }
 
         private static bool ExcellentFilter(double mark)
