@@ -61,10 +61,10 @@ namespace BashSoft
 
         private static double Average(List<int> scoresOnTask)
         {
-            var totalScore = 0;
+            double totalScore = 0;
             scoresOnTask.ForEach(s => totalScore+=s);
 
-            var percentageOfAll = totalScore / scoresOnTask.Count * 100;
+            var percentageOfAll = totalScore / (scoresOnTask.Count * 100);
             var mark = percentageOfAll * 4 + 2;
 
             return mark;
