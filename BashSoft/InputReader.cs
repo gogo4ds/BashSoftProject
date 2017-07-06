@@ -2,10 +2,17 @@
 
 namespace BashSoft
 {
-    public static class InputReader
+    public class InputReader
     {
         private const string EndCommand = "quit";
-        public static void StartReadingCommands()
+        private CommandInterpreter interpreter;
+
+        public InputReader(CommandInterpreter interpreter)
+        {
+            this.interpreter = interpreter;
+        }
+
+        public void StartReadingCommands()
         {
             OutputWriter.WriteMessage($"{SessionData.CurrentPath}>");
 
@@ -15,7 +22,7 @@ namespace BashSoft
                 if (string.IsNullOrWhiteSpace(input)) continue;
                 input = input.Trim();
 
-                CommandInterpreter.InterpredCommand(input);
+                interpreter.InterpredCommand(input);
                 OutputWriter.WriteMessage($"{SessionData.CurrentPath}>");
             }
         }

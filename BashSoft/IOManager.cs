@@ -4,9 +4,9 @@ using System.IO;
 
 namespace BashSoft
 {
-    public static class IOManager
+    public class IOManager
     {
-        public static void TraverseDirectory(int depth)
+        public void TraverseDirectory(int depth)
         {
             OutputWriter.WriteEmptyLine();
             int initialIdentation = SessionData.CurrentPath.Split('\\').Length;
@@ -42,11 +42,11 @@ namespace BashSoft
                 catch (UnauthorizedAccessException)
                 {
                     Console.WriteLine(ExceptionMessages.UnauthorizedAccessExceptionMessage);
-                }  
+                }
             }
         }
 
-        public static void ChangeCurrentDirectoryRelative(string relativePath)
+        public void ChangeCurrentDirectoryRelative(string relativePath)
         {
             if (relativePath == "..")
             {
@@ -60,7 +60,7 @@ namespace BashSoft
                 catch (ArgumentOutOfRangeException)
                 {
                     OutputWriter.DisplayException(ExceptionMessages.UnableToGoHigherInThePartitionHierarchy);
-                }            
+                }
             }
             else
             {
@@ -70,7 +70,7 @@ namespace BashSoft
             }
         }
 
-        public static void ChangeCurrentDirectoryAbsolute(string absolutePath)
+        public void ChangeCurrentDirectoryAbsolute(string absolutePath)
         {
             if (!Directory.Exists(absolutePath))
             {
@@ -81,7 +81,7 @@ namespace BashSoft
             SessionData.CurrentPath = absolutePath;
         }
 
-        public static void CreateDirectoryInCurrentFolder(string name)
+        public void CreateDirectoryInCurrentFolder(string name)
         {
             string path = GetCurrentDirectoryPath() + "\\" + name;
             try
@@ -90,12 +90,11 @@ namespace BashSoft
             }
             catch (ArgumentException)
             {
-              OutputWriter.DisplayException(ExceptionMessages.ForbiddenSymbolsContainedInName);
+                OutputWriter.DisplayException(ExceptionMessages.ForbiddenSymbolsContainedInName);
             }
-            
         }
 
-        private static string GetCurrentDirectoryPath()
+        private string GetCurrentDirectoryPath()
         {
             return SessionData.CurrentPath;
         }

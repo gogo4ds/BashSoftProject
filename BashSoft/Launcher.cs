@@ -4,14 +4,13 @@
     {
         private static void Main()
         {
-            //IOManager.ChangeCurrentDirectoryAbsolute(@"C:\Users\gogo4_000\Desktop\SoftUni\C# Fundamentals\C# Advanced\BashSoft\BashSoftProject\BashSoft\bin\Debug\gesho");
-            //IOManager.TraverseDirectory(0);
+            Tester tester = new Tester();
+            IOManager ioManager = new IOManager();
+            StudentsRepository repo = new StudentsRepository(new RepositorySorter(), new RepositoryFilter());
+            CommandInterpreter currentInterpreter = new CommandInterpreter(tester, repo, ioManager);
+            InputReader reader = new InputReader(currentInterpreter);
 
-            //StudentsRepository.InitializeData();
-            //StudentsRepository.GetAllStudentsFromCourse("Unity");
-
-            //IOManager.CreateDirectoryInCurrentFolder("*2");
-            InputReader.StartReadingCommands();
+            reader.StartReadingCommands();
         }
     }
 }
