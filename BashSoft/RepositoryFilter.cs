@@ -22,8 +22,7 @@ namespace BashSoft
                     break;
 
                 default:
-                    OutputWriter.DisplayException(ExceptionMessages.InvalidStudentFilter);
-                    break;
+                    throw new ArgumentException(ExceptionMessages.InvalidStudentFilter);
             }
         }
 

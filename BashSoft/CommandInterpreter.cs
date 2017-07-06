@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
+using System.IO;
 
 namespace BashSoft
 {
@@ -21,6 +24,46 @@ namespace BashSoft
         {
             string[] data = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             string command = data[0];
+            try
+            {
+                ParseCommand(input, data, command);
+            }
+            catch (DirectoryNotFoundException dnf)
+            {
+                OutputWriter.DisplayException(dnf.Message);
+            }
+            catch (IOException io)
+            {
+                OutputWriter.DisplayException(io.Message);
+            }
+            catch (ArgumentNullException an)
+            {
+                OutputWriter.DisplayException(an.Message);
+            }
+            catch (ArgumentOutOfRangeException aoore)
+            {
+                OutputWriter.DisplayException(aoore.Message);
+            }
+            catch (ArgumentException ae)
+            {
+                OutputWriter.DisplayException(ae.Message);
+            }
+            catch (DuplicateNameException dn)
+            {
+                OutputWriter.DisplayException(dn.Message);
+            }
+            catch (KeyNotFoundException knf)
+            {
+                OutputWriter.DisplayException(knf.Message);
+            }
+            catch (Exception e)
+            {
+                OutputWriter.DisplayException(e.Message);
+            }
+        }
+
+        private void ParseCommand(string input, string[] data, string command)
+        {
             switch (command)
             {
                 case "open":

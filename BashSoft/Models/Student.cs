@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace BashSoft.Models
@@ -7,7 +9,7 @@ namespace BashSoft.Models
     {
         private string username;
         private Dictionary<string, Course> enrolledCourses;
-        public Dictionary<string, double> marksByCourseName;
+        private Dictionary<string, double> marksByCourseName;
 
         public Student(string username)
         {
@@ -16,15 +18,29 @@ namespace BashSoft.Models
             marksByCourseName = new Dictionary<string, double>();
         }
 
-        public string Username { get; set; }
+        public string Username
+        {
+            get => username;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentException(nameof(username), ExceptionMessages.NullOrEmptyValue);
+                }
+
+                username = value;
+            }
+        }
+
+        public IReadOnlyDictionary<string, Course> EnrolledCourses => enrolledCourses;
+        public IReadOnlyDictionary<string, double> MarksByCourseName => marksByCourseName;
 
         public void EnrollCOurse(Course course)
         {
-            if (enrolledCourses.ContainsKey(course.Name))
+            if (EnrolledCourses.ContainsKey(course.Name))
             {
-                OutputWriter.DisplayException(string.Format(
+                throw new DuplicateNameException(string.Format(
                     ExceptionMessages.StudentAlreadyEnrolledInGivenCourse, Username, course.Name));
-                return;
             }
 
             enrolledCourses.Add(course.Name, course);
@@ -32,16 +48,14 @@ namespace BashSoft.Models
 
         public void SetMarksInCourse(string courseName, params int[] scores)
         {
-            if (!enrolledCourses.ContainsKey(courseName))
+            if (!EnrolledCourses.ContainsKey(courseName))
             {
-                OutputWriter.DisplayException(ExceptionMessages.NotEnrolledInCourse);
-                return;
+                throw new KeyNotFoundException(ExceptionMessages.NotEnrolledInCourse);
             }
 
             if (scores.Length > Course.NumberOfTasksOnExam)
             {
-                OutputWriter.DisplayException(ExceptionMessages.InvalidNumberOfScores);
-                return;
+                throw new ArgumentOutOfRangeException(ExceptionMessages.InvalidNumberOfScores);
             }
 
             marksByCourseName.Add(courseName, CalculateMark(scores));
