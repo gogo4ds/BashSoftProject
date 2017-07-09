@@ -44,9 +44,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandInterpreter.cs" />
+    <Compile Include="Commands\ChangeAbsolutePathCommand.cs" />
+    <Compile Include="Commands\ChangeRelativePathCommand.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\CompareFilesCommand.cs" />
+    <Compile Include="Commands\DropDatabaseCommand.cs" />
+    <Compile Include="Commands\GetHelpCommand.cs" />
+    <Compile Include="Commands\MakeDirectoryCommand.cs" />
+    <Compile Include="Commands\OpenFileCommand.cs" />
+    <Compile Include="Commands\PrintFilteredStudentsCommand.cs" />
+    <Compile Include="Commands\PrintOrderedStudentsCommand.cs" />
+    <Compile Include="Commands\ReadDatabaseCommand.cs" />
+    <Compile Include="Commands\ShowCourseCommand.cs" />
+    <Compile Include="Commands\TraverseFoldersCommand.cs" />
     <Compile Include="ExceptionMessages.cs" />
     <Compile Include="Exceptions\CourseNotFoundException.cs" />
     <Compile Include="Exceptions\DuplicateEntryInStructureException.cs" />
+    <Compile Include="Exceptions\InvalidCommandException.cs" />
+    <Compile Include="Exceptions\InvalidCommandParametersCountException.cs" />
     <Compile Include="Exceptions\InvalidFileNameException.cs" />
     <Compile Include="Exceptions\InvalidPathException.cs" />
     <Compile Include="Exceptions\InvalidStringException.cs" />
@@ -63,6 +78,7 @@
     <Compile Include="SessionData.cs" />
     <Compile Include="StudentsRepository.cs" />
     <Compile Include="Tester.cs" />
+    <Compile Include="Utilities\CommandValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
