@@ -45,6 +45,12 @@
   <ItemGroup>
     <Compile Include="CommandInterpreter.cs" />
     <Compile Include="ExceptionMessages.cs" />
+    <Compile Include="Exceptions\CourseNotFoundException.cs" />
+    <Compile Include="Exceptions\DuplicateEntryInStructureException.cs" />
+    <Compile Include="Exceptions\InvalidFileNameException.cs" />
+    <Compile Include="Exceptions\InvalidPathException.cs" />
+    <Compile Include="Exceptions\InvalidStringException.cs" />
+    <Compile Include="Exceptions\NotEnrolledInCourseException.cs" />
     <Compile Include="InputReader.cs" />
     <Compile Include="IOManager.cs" />
     <Compile Include="Launcher.cs" />

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using BashSoft.Exceptions;
 using BashSoft.Models;
 
 namespace BashSoft
@@ -10,7 +11,6 @@ namespace BashSoft
     public class StudentsRepository
     {
         public bool IsDataInitialized = false;
-        private Dictionary<string, Dictionary<string, List<int>>> studentsByCorse;
         private RepositoryFilter filter;
         private RepositorySorter sorter;
         private Dictionary<string, Course> courses;
@@ -20,7 +20,6 @@ namespace BashSoft
         {
             this.filter = filter;
             this.sorter = sorter;
-            this.studentsByCorse = new Dictionary<string, Dictionary<string, List<int>>>();
         }
 
         public void GetStudentScoresFromCourse(string courseName, string username)
@@ -66,7 +65,6 @@ namespace BashSoft
 
             students = null;
             courses = null;
-            studentsByCorse = new Dictionary<string, Dictionary<string, List<int>>>();
             IsDataInitialized = false;
         }
 
@@ -112,7 +110,7 @@ namespace BashSoft
             }
             if (!courses.ContainsKey(courseName))
             {
-                throw new KeyNotFoundException(ExceptionMessages.InexistingCourseInDataBase);
+                throw new CourseNotFoundException();
             }
 
             return true;
@@ -184,7 +182,7 @@ namespace BashSoft
             }
             else
             {
-                throw new DirectoryNotFoundException(ExceptionMessages.InvalidPath);
+                throw new InvalidPathException();
             }
         }
     }

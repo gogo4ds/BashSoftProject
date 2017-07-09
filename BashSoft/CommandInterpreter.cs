@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
+using BashSoft.Exceptions;
 
 namespace BashSoft
 {
@@ -32,9 +32,9 @@ namespace BashSoft
             {
                 OutputWriter.DisplayException(dnf.Message);
             }
-            catch (IOException io)
+            catch (InvalidPathException ip)
             {
-                OutputWriter.DisplayException(io.Message);
+                OutputWriter.DisplayException(ip.Message);
             }
             catch (ArgumentNullException an)
             {
@@ -48,13 +48,17 @@ namespace BashSoft
             {
                 OutputWriter.DisplayException(ae.Message);
             }
-            catch (DuplicateNameException dn)
+            catch (DuplicateEntryInStructureException dn)
             {
                 OutputWriter.DisplayException(dn.Message);
             }
             catch (KeyNotFoundException knf)
             {
                 OutputWriter.DisplayException(knf.Message);
+            }
+            catch (CourseNotFoundException cnf)
+            {
+                OutputWriter.DisplayException(cnf.Message);
             }
             catch (Exception e)
             {
@@ -67,16 +71,16 @@ namespace BashSoft
             switch (command)
             {
                 case "open":
-                    TryOpenFile(input, data);
+                    TryOpenFile(data);
                     break;
 
                 case "mkdir":
                     TryCreateDirectory(data);
-                    TryOpenFile(input, data);
+                    TryOpenFile(data);
                     break;
 
                 case "ls":
-                    TryTraverseFolder(input, data);
+                    TryTraverseFolder(data);
                     break;
 
                 case "cmp":
@@ -84,7 +88,7 @@ namespace BashSoft
                     break;
 
                 case "cdRel":
-                    TryChangePathRelatively(input, data);
+                    TryChangePathRelatively(data);
                     break;
 
                 case "cdAbs":
@@ -96,19 +100,19 @@ namespace BashSoft
                     break;
 
                 case "help":
-                    TryGetHelp(input, data);
+                    TryGetHelp(data);
                     break;
 
                 case "show":
-                    TryShowWantedData(input, data);
+                    TryShowWantedData(data);
                     break;
 
                 case "filter":
-                    TryFilterAndTake(input, data);
+                    TryFilterAndTake(data);
                     break;
 
                 case "order":
-                    TryOrderAndTake(input, data);
+                    TryOrderAndTake(data);
                     break;
 
                 case "dropdb":
@@ -145,7 +149,7 @@ namespace BashSoft
             OutputWriter.WriteMessageOnNewLine("Database dropped!");
         }
 
-        private void TryOrderAndTake(string input, string[] data)
+        private void TryOrderAndTake(string[] data)
         {
             if (!IsCommandValidLenght(data, 5)) return;
 
@@ -183,7 +187,7 @@ namespace BashSoft
             }
         }
 
-        private void TryFilterAndTake(string input, string[] data)
+        private void TryFilterAndTake(string[] data)
         {
             if (!IsCommandValidLenght(data, 5)) return;
 
@@ -221,7 +225,7 @@ namespace BashSoft
             }
         }
 
-        private void TryShowWantedData(string input, string[] data)
+        private void TryShowWantedData(string[] data)
         {
             switch (data.Length)
             {
@@ -266,7 +270,7 @@ namespace BashSoft
             OutputWriter.DisplayException(string.Format(ExceptionMessages.InvalidCommandParametersCount, data[0]));
         }
 
-        private void TryChangePathRelatively(string input, string[] data)
+        private void TryChangePathRelatively(string[] data)
         {
             if (!IsCommandValidLenght(data, 2)) return;
 
@@ -284,7 +288,7 @@ namespace BashSoft
             judge.CompareContent(firstPath, secondPath);
         }
 
-        private void TryTraverseFolder(string input, string[] data)
+        private void TryTraverseFolder(string[] data)
         {
             if (data.Length < 2)
             {
@@ -315,7 +319,7 @@ namespace BashSoft
             inputOutputManager.CreateDirectoryInCurrentFolder(folderName);
         }
 
-        private void TryOpenFile(string input, string[] data)
+        private void TryOpenFile(string[] data)
         {
             if (!IsCommandValidLenght(data, 2)) return;
 
@@ -341,7 +345,7 @@ namespace BashSoft
             return false;
         }
 
-        private void TryGetHelp(string input, string[] data)
+        private void TryGetHelp(string[] data)
         {
             if (!IsCommandValidLenght(data, 1)) return;
 
