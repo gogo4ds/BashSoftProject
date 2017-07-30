@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using BashSoft.Contracts;
+using BashSoft.DataStructures;
 using BashSoft.Exceptions;
 using BashSoft.Models;
 using BashSoft.Utilities;
@@ -43,6 +44,24 @@ namespace BashSoft.Core
                     GetStudentScoresFromCourse(courseName, student.Key);
                 }
             }
+        }
+
+        public ISimpleOrderedBag<ICourse> GetAllCoursesSorted(IComparer<ICourse> comparer)
+        {
+            var sortedCourses = new SimpleSortedList<ICourse>(comparer);
+
+            sortedCourses.AddAll(courses.Values);
+
+            return sortedCourses;
+        }
+
+        public ISimpleOrderedBag<IStudent> GetAllStudentsSorted(IComparer<IStudent> comparer)
+        {
+            var sortedStudents = new SimpleSortedList<IStudent>(comparer);
+
+            sortedStudents.AddAll(students.Values);
+
+            return sortedStudents;
         }
 
         public void LoadData(string fileName)

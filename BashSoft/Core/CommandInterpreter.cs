@@ -5,7 +5,6 @@ using System.IO;
 using BashSoft.Commands;
 using BashSoft.Contracts;
 using BashSoft.Exceptions;
-using BashSoft.Test;
 using BashSoft.Utilities;
 
 namespace BashSoft.Core
@@ -113,6 +112,9 @@ namespace BashSoft.Core
 
                 case "dropdb":
                     return new DropDatabaseCommand(input, data, judge, repository, inputOutputManager);
+
+                case "display":
+                    return new DisplayCommand(input, data, judge, repository, inputOutputManager);
 
                 //case "decOrder":
                 //    //TODO:

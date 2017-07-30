@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\DisplayCommand.cs" />
     <Compile Include="Contracts\IContentComparer.cs" />
     <Compile Include="Contracts\IDatabase.cs" />
     <Compile Include="Contracts\IDataFilter.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="Contracts\IFilteredTaker.cs" />
     <Compile Include="Contracts\IOrderedTaker.cs" />
     <Compile Include="Contracts\IRequester.cs" />
+    <Compile Include="Contracts\ISimpleOrderedBag.cs" />
     <Compile Include="Core\CommandInterpreter.cs" />
     <Compile Include="Commands\ChangeAbsolutePathCommand.cs" />
     <Compile Include="Commands\ChangeRelativePathCommand.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="Contracts\IInterpreter.cs" />
     <Compile Include="Contracts\IReader.cs" />
     <Compile Include="Contracts\IStudent.cs" />
+    <Compile Include="DataStructures\SimpleSortedList.cs" />
     <Compile Include="Utilities\ExceptionMessages.cs" />
     <Compile Include="Exceptions\CourseNotFoundException.cs" />
     <Compile Include="Exceptions\DuplicateEntryInStructureException.cs" />

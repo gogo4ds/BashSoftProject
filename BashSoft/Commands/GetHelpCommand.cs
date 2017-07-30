@@ -36,6 +36,7 @@ namespace BashSoft.Commands
                 $"|{"download file - download: path of file (saved in current directory)",-98}|");
             OutputWriter.WriteMessageOnNewLine(
                 $"|{"download file asinchronously - downloadAsynch: path of file (save in the current directory)",-98}|");
+            OutputWriter.WriteMessageOnNewLine($"|{"display data entities - display students/courses ascending/descending",-98}|");
             OutputWriter.WriteMessageOnNewLine($"|{"get help – help",-98}|");
             OutputWriter.WriteMessageOnNewLine($"{new string('_', 100)}");
             OutputWriter.WriteEmptyLine();

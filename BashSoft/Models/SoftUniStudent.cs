@@ -69,5 +69,9 @@ namespace BashSoft.Models
             double mark = percentageOfSolvedExam * 4 + 2;
             return mark;
         }
+
+        public int CompareTo(IStudent other) => string.CompareOrdinal(Username, other.Username);
+
+        public override string ToString() => Username;
     }
 }

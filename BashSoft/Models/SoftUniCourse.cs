@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BashSoft.Contracts;
 using BashSoft.Exceptions;
 
@@ -42,5 +43,9 @@ namespace BashSoft.Models
 
             this.studentsByName.Add(student.Username, student);
         }
+
+        public int CompareTo(ICourse other) => string.CompareOrdinal(Name, other.Name);
+
+        public override string ToString() => Name;
     }
 }
