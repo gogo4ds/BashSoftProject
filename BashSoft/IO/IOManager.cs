@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using BashSoft.Contracts;
 using BashSoft.Exceptions;
+using BashSoft.StaticData;
 using BashSoft.Utilities;
 
-namespace BashSoft.Core
+namespace BashSoft.IO
 {
     public class IOManager : IDirectoryManager
     {

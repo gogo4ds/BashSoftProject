@@ -1,8 +1,8 @@
 ﻿using System;
 using BashSoft.Contracts;
-using BashSoft.Utilities;
+using BashSoft.StaticData;
 
-namespace BashSoft.Core
+namespace BashSoft.IO
 {
     public class InputReader : IReader
     {

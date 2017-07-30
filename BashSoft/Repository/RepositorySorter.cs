@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using BashSoft.Contracts;
+using BashSoft.IO;
+using BashSoft.StaticData;
 using BashSoft.Utilities;
 
-namespace BashSoft.Core
+namespace BashSoft.Repository
 {
     public class RepositorySorter : IDataSorter
     {

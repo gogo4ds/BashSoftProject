@@ -6,10 +6,11 @@ using System.Text.RegularExpressions;
 using BashSoft.Contracts;
 using BashSoft.DataStructures;
 using BashSoft.Exceptions;
+using BashSoft.IO;
 using BashSoft.Models;
-using BashSoft.Utilities;
+using BashSoft.StaticData;
 
-namespace BashSoft.Core
+namespace BashSoft.Repository
 {
     public class StudentsRepository : IDatabase
     {

@@ -5,7 +5,7 @@ using System.IO;
 using BashSoft.Commands;
 using BashSoft.Contracts;
 using BashSoft.Exceptions;
-using BashSoft.Utilities;
+using BashSoft.IO;
 
 namespace BashSoft.Core
 {
@@ -89,13 +89,13 @@ namespace BashSoft.Core
                 case "cmp":
                     return new CompareFilesCommand(input, data, judge, repository, inputOutputManager);
 
-                case "cdRel":
+                case "cdrel":
                     return new ChangeRelativePathCommand(input, data, judge, repository, inputOutputManager);
 
-                case "cdAbs":
+                case "cdabs":
                     return new ChangeAbsolutePathCommand(input, data, judge, repository, inputOutputManager);
 
-                case "readDb":
+                case "readdb":
                     return new ReadDatabaseCommand(input, data, judge, repository, inputOutputManager);
 
                 case "help":

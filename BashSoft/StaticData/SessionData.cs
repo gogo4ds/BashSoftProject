@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace BashSoft.Utilities
+namespace BashSoft.StaticData
 {
     public static class SessionData
     {

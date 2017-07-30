@@ -2,6 +2,8 @@
 using System.IO;
 using BashSoft.Contracts;
 using BashSoft.Exceptions;
+using BashSoft.IO;
+using BashSoft.StaticData;
 using BashSoft.Utilities;
 
 namespace BashSoft.Test

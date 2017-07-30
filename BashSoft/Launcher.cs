@@ -1,5 +1,7 @@
 ﻿using BashSoft.Contracts;
 using BashSoft.Core;
+using BashSoft.IO;
+using BashSoft.Repository;
 using BashSoft.Test;
 
 namespace BashSoft

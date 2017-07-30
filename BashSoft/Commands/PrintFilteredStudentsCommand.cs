@@ -1,4 +1,6 @@
 ﻿using BashSoft.Contracts;
+using BashSoft.IO;
+using BashSoft.StaticData;
 
 namespace BashSoft.Commands
 {

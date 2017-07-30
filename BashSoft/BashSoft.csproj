@@ -76,7 +76,7 @@
     <Compile Include="Contracts\IReader.cs" />
     <Compile Include="Contracts\IStudent.cs" />
     <Compile Include="DataStructures\SimpleSortedList.cs" />
-    <Compile Include="Utilities\ExceptionMessages.cs" />
+    <Compile Include="StaticData\ExceptionMessages.cs" />
     <Compile Include="Exceptions\CourseNotFoundException.cs" />
     <Compile Include="Exceptions\DuplicateEntryInStructureException.cs" />
     <Compile Include="Exceptions\InvalidCommandException.cs" />
@@ -85,23 +85,24 @@
     <Compile Include="Exceptions\InvalidPathException.cs" />
     <Compile Include="Exceptions\InvalidStringException.cs" />
     <Compile Include="Exceptions\NotEnrolledInCourseException.cs" />
-    <Compile Include="Core\InputReader.cs" />
-    <Compile Include="Core\IOManager.cs" />
+    <Compile Include="IO\InputReader.cs" />
+    <Compile Include="IO\IOManager.cs" />
     <Compile Include="Launcher.cs" />
     <Compile Include="Models\SoftUniCourse.cs" />
     <Compile Include="Models\SoftUniStudent.cs" />
-    <Compile Include="Utilities\OutputWriter.cs" />
+    <Compile Include="IO\OutputWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Core\RepositoryFilter.cs" />
-    <Compile Include="Core\RepositorySorter.cs" />
-    <Compile Include="Utilities\SessionData.cs" />
-    <Compile Include="Core\StudentsRepository.cs" />
+    <Compile Include="Repository\RepositoryFilter.cs" />
+    <Compile Include="Repository\RepositorySorter.cs" />
+    <Compile Include="StaticData\SessionData.cs" />
+    <Compile Include="Repository\StudentsRepository.cs" />
     <Compile Include="Test\Tester.cs" />
     <Compile Include="Utilities\CommandValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

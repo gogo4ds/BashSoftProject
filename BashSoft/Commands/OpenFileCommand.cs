@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using BashSoft.Contracts;
 using BashSoft.Exceptions;
+using BashSoft.StaticData;
 using BashSoft.Utilities;
 
 namespace BashSoft.Commands

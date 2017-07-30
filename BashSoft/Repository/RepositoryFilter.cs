@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using BashSoft.Contracts;
-using BashSoft.Utilities;
+using BashSoft.IO;
+using BashSoft.StaticData;
 
-namespace BashSoft.Core
+namespace BashSoft.Repository
 {
     public class RepositoryFilter : IDataFilter
     {
