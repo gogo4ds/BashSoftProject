@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using BashSoft.Contracts;
+using BashSoft.Utilities;
 
-namespace BashSoft
+namespace BashSoft.Core
 {
-    public class RepositoryFilter
+    public class RepositoryFilter : IDataFilter
     {
-        public void FilterAndTake(Dictionary<string, double> studentsWithMarks, string wantedFilter, int studentsToTake)
+        public void FilterAndTake(IDictionary<string, double> studentsWithMarks, string wantedFilter, int studentsToTake)
         {
             switch (wantedFilter.ToLower())
             {
@@ -26,7 +28,7 @@ namespace BashSoft
             }
         }
 
-        private void FilterAndTake(Dictionary<string, double> studentsWithMarks, Predicate<double> givenFilter,
+        private void FilterAndTake(IDictionary<string, double> studentsWithMarks, Predicate<double> givenFilter,
             int studentsToTake)
         {
             int counterForPrinted = 0;

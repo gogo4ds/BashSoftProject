@@ -1,10 +1,13 @@
-﻿namespace BashSoft.Commands
+﻿using BashSoft.Contracts;
+using BashSoft.Utilities;
+
+namespace BashSoft.Commands
 {
     using Exceptions;
 
     public class TraverseFoldersCommand : Command
     {
-        public TraverseFoldersCommand(string input, string[] data, Tester judge, StudentsRepository repository, IOManager inputOutputIoManager)
+        public TraverseFoldersCommand(string input, string[] data, IContentComparer judge, IDatabase repository, IDirectoryManager inputOutputIoManager)
             : base(input, data, judge, repository, inputOutputIoManager)
         {
         }

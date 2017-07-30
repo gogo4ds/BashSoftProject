@@ -1,13 +1,15 @@
 ﻿using System;
+using BashSoft.Contracts;
+using BashSoft.Utilities;
 
-namespace BashSoft
+namespace BashSoft.Core
 {
-    public class InputReader
+    public class InputReader : IReader
     {
         private const string EndCommand = "quit";
-        private CommandInterpreter interpreter;
+        private IInterpreter interpreter;
 
-        public InputReader(CommandInterpreter interpreter)
+        public InputReader(IInterpreter interpreter)
         {
             this.interpreter = interpreter;
         }
@@ -22,7 +24,7 @@ namespace BashSoft
                 if (string.IsNullOrWhiteSpace(input)) continue;
                 input = input.Trim();
 
-                interpreter.InterpredCommand(input);
+                interpreter.InterpretCommand(input);
                 OutputWriter.WriteMessage($"{SessionData.CurrentPath}>");
             }
         }

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
+using BashSoft.Contracts;
 using BashSoft.Exceptions;
+using BashSoft.Utilities;
 
-namespace BashSoft
+namespace BashSoft.Test
 {
-    public class Tester
+    public class Tester : IContentComparer
     {
         public void CompareContent(string userOutputPath, string expectedOutputPath)
         {

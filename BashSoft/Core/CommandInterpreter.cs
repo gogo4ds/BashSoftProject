@@ -3,30 +3,33 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using BashSoft.Commands;
+using BashSoft.Contracts;
 using BashSoft.Exceptions;
+using BashSoft.Test;
+using BashSoft.Utilities;
 
-namespace BashSoft
+namespace BashSoft.Core
 {
-    public class CommandInterpreter
+    public class CommandInterpreter : IInterpreter
     {
-        private Tester judge;
-        private StudentsRepository repository;
-        private IOManager inputOutputManager;
+        private IContentComparer judge;
+        private IDatabase repository;
+        private IDirectoryManager inputOutputManager;
 
-        public CommandInterpreter(Tester judge, StudentsRepository repository, IOManager inputOutputManager)
+        public CommandInterpreter(IContentComparer judge, IDatabase repository, IDirectoryManager inputOutputManager)
         {
             this.judge = judge;
             this.repository = repository;
             this.inputOutputManager = inputOutputManager;
         }
 
-        public void InterpredCommand(string input)
+        public void InterpretCommand(string input)
         {
             string[] data = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             string commandName = data[0];
             try
             {
-                var command = ParseCommand(input, data, commandName);
+                IExecutable command = ParseCommand(input, data, commandName);
                 command.Execute();
             }
             catch (Win32Exception we)

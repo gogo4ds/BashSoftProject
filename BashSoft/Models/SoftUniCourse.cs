@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
+using BashSoft.Contracts;
 using BashSoft.Exceptions;
 
 namespace BashSoft.Models
 {
-    public class Course
+    public class SoftUniCourse : ICourse
     {
         private string name;
-        private Dictionary<string, Student> studentsByName;
+        private Dictionary<string, IStudent> studentsByName;
         public const int NumberOfTasksOnExam = 5;
         public const int MaxScoreOnExamTask = 100;
 
-        public Course(string name)
+        public SoftUniCourse(string name)
         {
             Name = name;
-            studentsByName = new Dictionary<string, Student>();
+            studentsByName = new Dictionary<string, IStudent>();
         }
 
         public string Name
@@ -30,9 +31,9 @@ namespace BashSoft.Models
             }
         }
 
-        public IReadOnlyDictionary<string, Student> StudentsByName => studentsByName;
+        public IReadOnlyDictionary<string, IStudent> StudentsByName => studentsByName;
 
-        public void EnrollStudent(Student student)
+        public void EnrollStudent(IStudent student)
         {
             if (studentsByName.ContainsKey(student.Username))
             {

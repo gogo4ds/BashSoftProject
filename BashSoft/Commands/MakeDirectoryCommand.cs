@@ -1,10 +1,11 @@
-﻿using BashSoft.Utilities;
+﻿using BashSoft.Contracts;
+using BashSoft.Utilities;
 
 namespace BashSoft.Commands
 {
     public class MakeDirectoryCommand : Command
     {
-        public MakeDirectoryCommand(string input, string[] data, Tester judge, StudentsRepository repository, IOManager inputOutputIoManager)
+        public MakeDirectoryCommand(string input, string[] data, IContentComparer judge, IDatabase repository, IDirectoryManager inputOutputIoManager)
             : base(input, data, judge, repository, inputOutputIoManager)
         {
         }

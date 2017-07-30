@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using BashSoft.Contracts;
 using BashSoft.Exceptions;
 using BashSoft.Models;
+using BashSoft.Utilities;
 
-namespace BashSoft
+namespace BashSoft.Core
 {
-    public class StudentsRepository
+    public class StudentsRepository : IDatabase
     {
         public bool IsDataInitialized = false;
         private RepositoryFilter filter;
         private RepositorySorter sorter;
-        private Dictionary<string, Course> courses;
-        private Dictionary<string, Student> students;
+        private Dictionary<string, ICourse> courses;
+        private Dictionary<string, IStudent> students;
 
         public StudentsRepository(RepositorySorter sorter, RepositoryFilter filter)
         {
@@ -50,8 +52,8 @@ namespace BashSoft
                 throw new ArgumentException(ExceptionMessages.DataAlreadyInitializedException);
             }
 
-            students = new Dictionary<string, Student>();
-            courses = new Dictionary<string, Course>();
+            students = new Dictionary<string, IStudent>();
+            courses = new Dictionary<string, ICourse>();
             OutputWriter.WriteMessageOnNewLine("Reading data...");
             ReadData(fileName);
         }
@@ -152,7 +154,7 @@ namespace BashSoft
                         OutputWriter.DisplayException(ExceptionMessages.InvalidScore);
                     }
 
-                    if (scores.Length > Course.NumberOfTasksOnExam)
+                    if (scores.Length > SoftUniCourse.NumberOfTasksOnExam)
                     {
                         OutputWriter.DisplayException(ExceptionMessages.InvalidNumberOfScores);
                         continue;
@@ -160,18 +162,18 @@ namespace BashSoft
 
                     if (!students.ContainsKey(username))
                     {
-                        students.Add(username, new Student(username));
+                        students.Add(username, new SoftUniStudent(username));
                     }
 
                     if (!courses.ContainsKey(courseName))
                     {
-                        courses.Add(courseName, new Course(courseName));
+                        courses.Add(courseName, new SoftUniCourse(courseName));
                     }
 
-                    Course course = courses[courseName];
-                    Student student = students[username];
+                    ICourse course = courses[courseName];
+                    IStudent student = students[username];
 
-                    student.EnrollCOurse(course);
+                    student.EnrollCourse(course);
                     student.SetMarksInCourse(courseName, scores);
 
                     course.EnrollStudent(student);

@@ -1,12 +1,13 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using BashSoft.Contracts;
 using BashSoft.Exceptions;
+using BashSoft.Utilities;
 
 namespace BashSoft.Commands
 {
     internal class OpenFileCommand : Command
     {
-        public OpenFileCommand(string input, string[] data, Tester judge, StudentsRepository repository, IOManager inputOutputIoManager)
+        public OpenFileCommand(string input, string[] data, IContentComparer judge, IDatabase repository, IDirectoryManager inputOutputIoManager)
             : base(input, data, judge, repository, inputOutputIoManager)
         {
         }

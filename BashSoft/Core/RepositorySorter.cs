@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BashSoft.Contracts;
+using BashSoft.Utilities;
 
-namespace BashSoft
+namespace BashSoft.Core
 {
-    public class RepositorySorter
+    public class RepositorySorter : IDataSorter
     {
-        public void OrderAndTake(Dictionary<string, double> wantedData, string comparison, int studentsToTake)
+        public void OrderAndTake(IDictionary<string, double> wantedData, string comparison, int studentsToTake)
         {
             comparison = comparison.ToLower();
             if (comparison == "ascending")
@@ -23,7 +25,7 @@ namespace BashSoft
             }
         }
 
-        private void OrderAndTake(Dictionary<string, double> wantedData, int studentsToTake,
+        private void OrderAndTake(IDictionary<string, double> wantedData, int studentsToTake,
             Func<KeyValuePair<string, double>, KeyValuePair<string, double>, int> comparisonFunc)
         {
             var students = GetSortedStudents(wantedData, studentsToTake, comparisonFunc);
@@ -33,7 +35,7 @@ namespace BashSoft
             }
         }
 
-        private static Dictionary<string, double> GetSortedStudents(Dictionary<string, double> studentsWanted, int takeCount,
+        private static Dictionary<string, double> GetSortedStudents(IDictionary<string, double> studentsWanted, int takeCount,
             Func<KeyValuePair<string, double>, KeyValuePair<string, double>, int> comparison)
         {
             var valuesTaken = 0;
