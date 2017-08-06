@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using BashSoft.Contracts;
-using BashSoft.IO;
-using BashSoft.StaticData;
-using BashSoft.Utilities;
-
-namespace BashSoft.Repository
+﻿namespace BashSoft.Repository
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using BashSoft.Contracts;
+    using BashSoft.IO;
+    using BashSoft.StaticData;
+
     public class RepositorySorter : IDataSorter
     {
         public void OrderAndTake(IDictionary<string, double> wantedData, string comparison, int studentsToTake)
@@ -15,11 +14,11 @@ namespace BashSoft.Repository
             comparison = comparison.ToLower();
             if (comparison == "ascending")
             {
-                OrderAndTake(wantedData, studentsToTake, CompareInOrder);
+                this.OrderAndTake(wantedData, studentsToTake, CompareInOrder);
             }
             else if (comparison == "descending")
             {
-                OrderAndTake(wantedData, studentsToTake, CompareDescendingOrder);
+                this.OrderAndTake(wantedData, studentsToTake, CompareDescendingOrder);
             }
             else
             {
@@ -27,17 +26,8 @@ namespace BashSoft.Repository
             }
         }
 
-        private void OrderAndTake(IDictionary<string, double> wantedData, int studentsToTake,
-            Func<KeyValuePair<string, double>, KeyValuePair<string, double>, int> comparisonFunc)
-        {
-            var students = GetSortedStudents(wantedData, studentsToTake, comparisonFunc);
-            foreach (var st in students.OrderBy(x => x.Value).Take(studentsToTake).ToDictionary(pair => pair.Key, pair => pair.Value))
-            {
-                OutputWriter.PrintStudent(new KeyValuePair<string, double>(st.Key, st.Value));
-            }
-        }
-
-        private static Dictionary<string, double> GetSortedStudents(IDictionary<string, double> studentsWanted, int takeCount,
+        private static Dictionary<string, double> GetSortedStudents(IDictionary<string, double> studentsWanted,
+                    int takeCount,
             Func<KeyValuePair<string, double>, KeyValuePair<string, double>, int> comparison)
         {
             var valuesTaken = 0;
@@ -51,7 +41,7 @@ namespace BashSoft.Repository
                 {
                     if (!string.IsNullOrEmpty(nextInOrder.Key))
                     {
-                        int comparisonResult = comparison(student, nextInOrder);
+                        var comparisonResult = comparison(student, nextInOrder);
                         if (comparisonResult >= 0 && !studentsSorted.ContainsKey(student.Key))
                         {
                             nextInOrder = student;
@@ -79,14 +69,27 @@ namespace BashSoft.Repository
             return studentsSorted;
         }
 
-        private static int CompareInOrder(KeyValuePair<string, double> firstValue, KeyValuePair<string, double> secondValue)
+        private static int CompareInOrder(KeyValuePair<string, double> firstValue,
+                    KeyValuePair<string, double> secondValue)
         {
             return secondValue.Value.CompareTo(firstValue.Value);
         }
 
-        private static int CompareDescendingOrder(KeyValuePair<string, double> firstValue, KeyValuePair<string, double> secondValue)
+        private static int CompareDescendingOrder(KeyValuePair<string, double> firstValue,
+                    KeyValuePair<string, double> secondValue)
         {
             return firstValue.Value.CompareTo(secondValue.Value);
+        }
+
+        private void OrderAndTake(IDictionary<string, double> wantedData, int studentsToTake,
+            Func<KeyValuePair<string, double>, KeyValuePair<string, double>, int> comparisonFunc)
+        {
+            var students = GetSortedStudents(wantedData, studentsToTake, comparisonFunc);
+            foreach (var st in students.OrderBy(x => x.Value).Take(studentsToTake)
+                .ToDictionary(pair => pair.Key, pair => pair.Value))
+            {
+                OutputWriter.PrintStudent(new KeyValuePair<string, double>(st.Key, st.Value));
+            }
         }
     }
 }

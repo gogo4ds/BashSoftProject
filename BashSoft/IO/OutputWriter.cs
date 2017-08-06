@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace BashSoft.IO
+﻿namespace BashSoft.IO
 {
+    using System;
+    using System.Collections.Generic;
+
     public static class OutputWriter
     {
         public static void WriteMessage(string message)
@@ -22,7 +22,7 @@ namespace BashSoft.IO
 
         public static void DisplayException(string message)
         {
-            ConsoleColor currentColor = Console.ForegroundColor;
+            var currentColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(message);
             Console.ForegroundColor = currentColor;

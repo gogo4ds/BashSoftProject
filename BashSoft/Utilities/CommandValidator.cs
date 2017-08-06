@@ -1,7 +1,7 @@
-﻿using BashSoft.Exceptions;
-
-namespace BashSoft.Utilities
+﻿namespace BashSoft.Utilities
 {
+    using BashSoft.Exceptions;
+
     public static class CommandValidator
     {
         public static bool IsCommandValidLenght(string[] data, int validLenght)

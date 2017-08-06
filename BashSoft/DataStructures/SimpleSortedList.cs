@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-using BashSoft.Contracts;
-
-namespace BashSoft.DataStructures
+﻿namespace BashSoft.DataStructures
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Text;
+    using BashSoft.Contracts;
+
     public class SimpleSortedList<T> : ISimpleOrderedBag<T> where T : IComparable<T>
     {
         private const int DefaultSize = 16;
         private static readonly IComparer<T> DefaultComparer = Comparer<T>.Create((x, y) => x.CompareTo(y));
+        private readonly IComparer<T> comparison;
 
         private T[] innerCollection;
-        private int size;
-        private IComparer<T> comparison;
 
         public SimpleSortedList(IComparer<T> comparer, int capacity)
         {
-            InitializeInnerCollection(capacity);
+            this.InitializeInnerCollection(capacity);
             this.comparison = comparer;
         }
 
@@ -36,7 +35,62 @@ namespace BashSoft.DataStructures
         {
         }
 
-        public int Size => this.size;
+        public int Size { get; private set; }
+
+        public void Add(T element)
+        {
+            if (this.innerCollection.Length == this.Size)
+            {
+                this.Resize();
+            }
+
+            this.innerCollection[this.Size] = element;
+            this.Size++;
+            Array.Sort(this.innerCollection, 0, this.Size, this.comparison);
+        }
+
+        public void AddAll(ICollection<T> collection)
+        {
+            if (this.Size + collection.Count >= this.innerCollection.Length)
+            {
+                this.MultiResize(collection);
+            }
+
+            foreach (var item in collection)
+            {
+                this.innerCollection[this.Size] = item;
+                this.Size++;
+            }
+
+            Array.Sort(this.innerCollection, 0, this.Size, this.comparison);
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            foreach (var item in this.innerCollection)
+            {
+                yield return item;
+            }
+        }
+
+        public string JoinWith(string joiner)
+        {
+            var builder = new StringBuilder();
+
+            foreach (var element in this)
+            {
+                builder.Append(element);
+                builder.Append(joiner);
+            }
+
+            builder.Remove(builder.Length - 1, 1);
+            return builder.ToString();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
 
         private void InitializeInnerCollection(int capacity)
         {
@@ -50,74 +104,22 @@ namespace BashSoft.DataStructures
 
         private void Resize()
         {
-            T[] newCollection = new T[this.Size * 2];
-            Array.Copy(innerCollection, newCollection, Size);
-            innerCollection = newCollection;
+            var newCollection = new T[this.Size * 2];
+            Array.Copy(this.innerCollection, newCollection, this.Size);
+            this.innerCollection = newCollection;
         }
 
         private void MultiResize(ICollection<T> collection)
         {
-            int newSize = innerCollection.Length * 2;
-            while (Size + collection.Count >= newSize)
+            var newSize = this.innerCollection.Length * 2;
+            while (this.Size + collection.Count >= newSize)
             {
                 newSize *= 2;
             }
 
-            T[] newCollection = new T[newSize];
-            Array.Copy(innerCollection, newCollection, this.size);
-            innerCollection = newCollection;
+            var newCollection = new T[newSize];
+            Array.Copy(this.innerCollection, newCollection, this.Size);
+            this.innerCollection = newCollection;
         }
-
-        public void Add(T element)
-        {
-            if (this.innerCollection.Length == this.Size)
-            {
-                Resize();
-            }
-
-            this.innerCollection[size] = element;
-            this.size++;
-            Array.Sort(this.innerCollection, 0, this.size, this.comparison);
-        }
-
-        public void AddAll(ICollection<T> collection)
-        {
-            if (Size + collection.Count >= this.innerCollection.Length)
-            {
-                MultiResize(collection);
-            }
-
-            foreach (var item in collection)
-            {
-                this.innerCollection[Size] = item;
-                this.size++;
-            }
-
-            Array.Sort(innerCollection, 0, size, comparison);
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            foreach (var item in innerCollection)
-            {
-                yield return item;
-            }
-        }
-
-        public string JoinWith(string joiner)
-        {
-            StringBuilder builder = new StringBuilder();
-
-            foreach (var element in this)
-            {
-                builder.Append(element);
-                builder.Append(joiner);
-            }
-
-            builder.Remove(builder.Length - 1, 1);
-            return builder.ToString();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

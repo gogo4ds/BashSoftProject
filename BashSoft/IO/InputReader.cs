@@ -1,13 +1,13 @@
-﻿using System;
-using BashSoft.Contracts;
-using BashSoft.StaticData;
-
-namespace BashSoft.IO
+﻿namespace BashSoft.IO
 {
+    using System;
+    using BashSoft.Contracts;
+    using BashSoft.StaticData;
+
     public class InputReader : IReader
     {
         private const string EndCommand = "quit";
-        private IInterpreter interpreter;
+        private readonly IInterpreter interpreter;
 
         public InputReader(IInterpreter interpreter)
         {
@@ -21,10 +21,14 @@ namespace BashSoft.IO
             string input;
             while ((input = Console.ReadLine()) != EndCommand)
             {
-                if (string.IsNullOrWhiteSpace(input)) continue;
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    continue;
+                }
+
                 input = input.Trim();
 
-                interpreter.InterpretCommand(input);
+                this.interpreter.InterpretCommand(input);
                 OutputWriter.WriteMessage($"{SessionData.CurrentPath}>");
             }
         }

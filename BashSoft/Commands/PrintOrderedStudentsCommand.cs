@@ -1,43 +1,48 @@
-﻿using BashSoft.Contracts;
-using BashSoft.IO;
-using BashSoft.StaticData;
-
-namespace BashSoft.Commands
+﻿namespace BashSoft.Commands
 {
-    using Utilities;
+    using BashSoft.Contracts;
+    using BashSoft.IO;
+    using BashSoft.StaticData;
+    using BashSoft.Utilities;
 
     internal class PrintOrderedStudentsCommand : Command
     {
-        public PrintOrderedStudentsCommand(string input, string[] data, IContentComparer judge, IDatabase repository, IDirectoryManager inputOutputIoManager)
+        public PrintOrderedStudentsCommand(string input, string[] data, IContentComparer judge, IDatabase repository,
+            IDirectoryManager inputOutputIoManager)
             : base(input, data, judge, repository, inputOutputIoManager)
         {
         }
 
         public override void Execute()
         {
-            if (!CommandValidator.IsCommandValidLenght(Data, 5)) return;
+            if (!CommandValidator.IsCommandValidLenght(this.Data, 5))
+            {
+                return;
+            }
 
-            string courseName = Data[1];
-            string comparison = Data[2].ToLower();
-            string takeCommand = Data[3].ToLower();
-            string takeQuantity = Data[4].ToLower();
+            var courseName = this.Data[1];
+            var comparison = this.Data[2].ToLower();
+            var takeCommand = this.Data[3].ToLower();
+            var takeQuantity = this.Data[4].ToLower();
 
-            TryParseParametersForOrderAndTake(takeCommand, takeQuantity, courseName, comparison);
+            this.TryParseParametersForOrderAndTake(takeCommand, takeQuantity, courseName, comparison);
         }
 
-        private void TryParseParametersForOrderAndTake(string takeCommand, string takeQuantity, string courseName, string comparison)
+        private void TryParseParametersForOrderAndTake(string takeCommand, string takeQuantity, string courseName,
+            string comparison)
         {
             if (takeCommand == "take")
             {
                 if (takeQuantity == "all")
                 {
-                    Repository.OrderAndTake(courseName, comparison);
+                    this.Repository.OrderAndTake(courseName, comparison);
                 }
                 else
                 {
-                    if (int.TryParse(takeQuantity, out int studentsToTake))
+                    int studentsToTake;
+                    if (int.TryParse(takeQuantity, out studentsToTake))
                     {
-                        Repository.FilterAndTake(courseName, comparison, studentsToTake);
+                        this.Repository.FilterAndTake(courseName, comparison, studentsToTake);
                     }
                     else
                     {

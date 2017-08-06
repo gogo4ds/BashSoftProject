@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace BashSoft.Exceptions
+﻿namespace BashSoft.Exceptions
 {
+    using System;
+
     public class InvalidFileNameException : Exception
     {
         private const string ForbiddenSymbolsContainedInName =

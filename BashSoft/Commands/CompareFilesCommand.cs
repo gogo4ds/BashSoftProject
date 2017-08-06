@@ -1,8 +1,7 @@
-﻿using BashSoft.Contracts;
-
-namespace BashSoft.Commands
+﻿namespace BashSoft.Commands
 {
-    using Utilities;
+    using BashSoft.Contracts;
+    using BashSoft.Utilities;
 
     public class CompareFilesCommand : Command
     {
@@ -13,12 +12,15 @@ namespace BashSoft.Commands
 
         public override void Execute()
         {
-            if (!CommandValidator.IsCommandValidLenght(Data, 3)) return;
+            if (!CommandValidator.IsCommandValidLenght(this.Data, 3))
+            {
+                return;
+            }
 
-            string firstPath = Data[1];
-            string secondPath = Data[2];
+            var firstPath = this.Data[1];
+            var secondPath = this.Data[2];
 
-            Judge.CompareContent(firstPath, secondPath);
+            this.Judge.CompareContent(firstPath, secondPath);
         }
     }
 }

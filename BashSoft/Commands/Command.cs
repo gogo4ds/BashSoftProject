@@ -1,30 +1,26 @@
-﻿using System;
-using BashSoft.Contracts;
-using BashSoft.Core;
-using BashSoft.Exceptions;
-
-namespace BashSoft.Commands
+﻿namespace BashSoft.Commands
 {
+    using System;
+    using BashSoft.Contracts;
+    using BashSoft.Exceptions;
+
     public abstract class Command : IExecutable
     {
-        private string input;
         private string[] data;
-        private IContentComparer judge;
-        private IDatabase repository;
-        private IDirectoryManager inputOutputIoManager;
+        private string input;
 
         protected Command(string input, string[] data, IContentComparer judge, IDatabase repository, IDirectoryManager inputOutputIoManager)
         {
-            Input = input;
-            Data = data;
-            this.judge = judge;
-            this.repository = repository;
-            this.inputOutputIoManager = inputOutputIoManager;
+            this.Input = input;
+            this.Data = data;
+            this.Judge = judge;
+            this.Repository = repository;
+            this.InputOutputManager = inputOutputIoManager;
         }
 
         protected string Input
         {
-            get => input;
+            get => this.input;
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
@@ -32,13 +28,13 @@ namespace BashSoft.Commands
                     throw new InvalidStringException();
                 }
 
-                input = value;
+                this.input = value;
             }
         }
 
         protected string[] Data
         {
-            get => data;
+            get => this.data;
             set
             {
                 if (value == null || value.Length == 0)
@@ -46,15 +42,15 @@ namespace BashSoft.Commands
                     throw new NullReferenceException();
                 }
 
-                data = value;
+                this.data = value;
             }
         }
 
-        protected IContentComparer Judge => judge;
+        protected IContentComparer Judge { get; }
 
-        protected IDatabase Repository => repository;
+        protected IDatabase Repository { get; }
 
-        protected IDirectoryManager InputOutputManager => inputOutputIoManager;
+        protected IDirectoryManager InputOutputManager { get; }
 
         public abstract void Execute();
     }

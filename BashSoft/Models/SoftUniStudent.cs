@@ -1,56 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using BashSoft.Contracts;
-using BashSoft.Exceptions;
-using BashSoft.StaticData;
-using BashSoft.Utilities;
-
-namespace BashSoft.Models
+﻿namespace BashSoft.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using BashSoft.Contracts;
+    using BashSoft.Exceptions;
+    using BashSoft.StaticData;
+
     public class SoftUniStudent : IStudent
     {
+        private readonly Dictionary<string, ICourse> enrolledCourses;
+        private readonly Dictionary<string, double> marksByCourseName;
         private string username;
-        private Dictionary<string, ICourse> enrolledCourses;
-        private Dictionary<string, double> marksByCourseName;
 
         public SoftUniStudent(string username)
         {
-            Username = username;
-            enrolledCourses = new Dictionary<string, ICourse>();
-            marksByCourseName = new Dictionary<string, double>();
+            this.Username = username;
+            this.enrolledCourses = new Dictionary<string, ICourse>();
+            this.marksByCourseName = new Dictionary<string, double>();
         }
 
         public string Username
         {
-            get => username;
+            get => this.username;
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    this.username = value;
+                }
+                else
                 {
                     throw new InvalidStringException();
                 }
-
-                username = value;
             }
         }
 
-        public IReadOnlyDictionary<string, ICourse> EnrolledCourses => enrolledCourses;
-        public IReadOnlyDictionary<string, double> MarksByCourseName => marksByCourseName;
+        public IReadOnlyDictionary<string, ICourse> EnrolledCourses => this.enrolledCourses;
+
+        public IReadOnlyDictionary<string, double> MarksByCourseName => this.marksByCourseName;
 
         public void EnrollCourse(ICourse course)
         {
-            if (EnrolledCourses.ContainsKey(course.Name))
+            if (this.EnrolledCourses.ContainsKey(course.Name))
             {
-                throw new DuplicateEntryInStructureException(Username, course.Name);
+                throw new DuplicateEntryInStructureException(this.Username, course.Name);
             }
 
-            enrolledCourses.Add(course.Name, course);
+            this.enrolledCourses.Add(course.Name, course);
         }
 
         public void SetMarksInCourse(string courseName, params int[] scores)
         {
-            if (!EnrolledCourses.ContainsKey(courseName))
+            if (!this.EnrolledCourses.ContainsKey(courseName))
             {
                 throw new NotEnrolledInCourseException();
             }
@@ -60,19 +62,26 @@ namespace BashSoft.Models
                 throw new ArgumentOutOfRangeException(ExceptionMessages.InvalidNumberOfScores);
             }
 
-            marksByCourseName.Add(courseName, CalculateMark(scores));
+            this.marksByCourseName.Add(courseName, this.CalculateMark(scores));
+        }
+
+        public int CompareTo(IStudent other)
+        {
+            return string.CompareOrdinal(this.Username, other.Username);
+        }
+
+        public override string ToString()
+        {
+            return this.Username;
         }
 
         private double CalculateMark(int[] scores)
         {
-            double percentageOfSolvedExam = scores.Sum() /
-                (double)(SoftUniCourse.NumberOfTasksOnExam * SoftUniCourse.MaxScoreOnExamTask);
-            double mark = percentageOfSolvedExam * 4 + 2;
+            var percentageOfSolvedExam = scores.Sum() /
+                                         (double)(SoftUniCourse.NumberOfTasksOnExam *
+                                                   SoftUniCourse.MaxScoreOnExamTask);
+            var mark = (percentageOfSolvedExam * 4) + 2;
             return mark;
         }
-
-        public int CompareTo(IStudent other) => string.CompareOrdinal(Username, other.Username);
-
-        public override string ToString() => Username;
     }
 }

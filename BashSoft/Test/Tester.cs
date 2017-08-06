@@ -1,13 +1,12 @@
-﻿using System;
-using System.IO;
-using BashSoft.Contracts;
-using BashSoft.Exceptions;
-using BashSoft.IO;
-using BashSoft.StaticData;
-using BashSoft.Utilities;
-
-namespace BashSoft.Test
+﻿namespace BashSoft.Test
 {
+    using System;
+    using System.IO;
+    using BashSoft.Contracts;
+    using BashSoft.Exceptions;
+    using BashSoft.IO;
+    using BashSoft.StaticData;
+
     public class Tester : IContentComparer
     {
         public void CompareContent(string userOutputPath, string expectedOutputPath)
@@ -15,15 +14,16 @@ namespace BashSoft.Test
             OutputWriter.WriteMessageOnNewLine("Reading files...");
             try
             {
-                string mismatchPath = GetMismatchPath(expectedOutputPath);
+                var mismatchPath = this.GetMismatchPath(expectedOutputPath);
 
-                string[] actualOutputLines = File.ReadAllLines(userOutputPath);
-                string[] expectedOutputLines = File.ReadAllLines(expectedOutputPath);
+                var actualOutputLines = File.ReadAllLines(userOutputPath);
+                var expectedOutputLines = File.ReadAllLines(expectedOutputPath);
 
                 bool hasMismatch;
-                string[] mismatches = GetLinesWithPossibleMismatches(actualOutputLines, expectedOutputLines, out hasMismatch);
+                var mismatches =
+                    this.GetLinesWithPossibleMismatches(actualOutputLines, expectedOutputLines, out hasMismatch);
 
-                PrintOutput(mismatches, hasMismatch, mismatchPath);
+                this.PrintOutput(mismatches, hasMismatch, mismatchPath);
                 OutputWriter.WriteMessageOnNewLine("Files read!");
             }
             catch (IOException)
@@ -51,11 +51,10 @@ namespace BashSoft.Test
         private string[] GetLinesWithPossibleMismatches(string[] actualOutputLines, string[] expectedOutputLines, out bool hasMismatch)
         {
             hasMismatch = false;
-            string output = string.Empty;
 
             OutputWriter.WriteMessageOnNewLine("Comparing files...");
 
-            int minOutputLines = actualOutputLines.Length;
+            var minOutputLines = actualOutputLines.Length;
             if (actualOutputLines.Length != expectedOutputLines.Length)
             {
                 hasMismatch = true;
@@ -63,13 +62,14 @@ namespace BashSoft.Test
                 OutputWriter.DisplayException(ExceptionMessages.ComparisonOfFilesWithDifferentSizes);
             }
 
-            string[] mismatches = new string[minOutputLines];
+            var mismatches = new string[minOutputLines];
 
-            for (int index = 0; index < minOutputLines; index++)
+            for (var index = 0; index < minOutputLines; index++)
             {
-                string actualLine = actualOutputLines[index];
-                string expextedLine = expectedOutputLines[index];
+                var actualLine = actualOutputLines[index];
+                var expextedLine = expectedOutputLines[index];
 
+                string output;
                 if (!actualLine.Equals(expextedLine))
                 {
                     output = $"Mismatch at line {index} -- expected: \"{expextedLine}\", actual: \"{actualLine}\"";
@@ -89,9 +89,9 @@ namespace BashSoft.Test
 
         private string GetMismatchPath(string expectedOutputPath)
         {
-            int indexOf = expectedOutputPath.LastIndexOf('\\');
-            string directoryPath = expectedOutputPath.Substring(0, indexOf);
-            string finalPath = directoryPath + @"\Mismatches.txt";
+            var indexOf = expectedOutputPath.LastIndexOf('\\');
+            var directoryPath = expectedOutputPath.Substring(0, indexOf);
+            var finalPath = directoryPath + @"\Mismatches.txt";
             return finalPath;
         }
     }

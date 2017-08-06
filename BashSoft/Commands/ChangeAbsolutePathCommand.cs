@@ -1,7 +1,6 @@
-﻿using BashSoft.Contracts;
-
-namespace BashSoft.Commands
+﻿namespace BashSoft.Commands
 {
+    using BashSoft.Contracts;
     using Exceptions;
 
     public class ChangeAbsolutePathCommand : Command

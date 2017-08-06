@@ -1,50 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using BashSoft.Contracts;
-using BashSoft.IO;
-using BashSoft.StaticData;
-
-namespace BashSoft.Repository
+﻿namespace BashSoft.Repository
 {
+    using System;
+    using System.Collections.Generic;
+    using BashSoft.Contracts;
+    using BashSoft.IO;
+    using BashSoft.StaticData;
+
     public class RepositoryFilter : IDataFilter
     {
-        public void FilterAndTake(IDictionary<string, double> studentsWithMarks, string wantedFilter, int studentsToTake)
+        public void FilterAndTake(IDictionary<string, double> studentsWithMarks, string wantedFilter,
+            int studentsToTake)
         {
             switch (wantedFilter.ToLower())
             {
                 case "excellent":
-                    FilterAndTake(studentsWithMarks, ExcellentFilter, studentsToTake);
+                    this.FilterAndTake(studentsWithMarks, ExcellentFilter, studentsToTake);
                     break;
 
                 case "average":
-                    FilterAndTake(studentsWithMarks, AverageFilter, studentsToTake);
+                    this.FilterAndTake(studentsWithMarks, AverageFilter, studentsToTake);
                     break;
 
                 case "poor":
-                    FilterAndTake(studentsWithMarks, PoorFilter, studentsToTake);
+                    this.FilterAndTake(studentsWithMarks, PoorFilter, studentsToTake);
                     break;
 
                 default:
                     throw new ArgumentException(ExceptionMessages.InvalidStudentFilter);
-            }
-        }
-
-        private void FilterAndTake(IDictionary<string, double> studentsWithMarks, Predicate<double> givenFilter,
-            int studentsToTake)
-        {
-            int counterForPrinted = 0;
-            foreach (var studentMark in studentsWithMarks)
-            {
-                if (counterForPrinted == studentsToTake)
-                {
-                    break;
-                }
-
-                if (givenFilter(studentMark.Value))
-                {
-                    OutputWriter.PrintStudent(new KeyValuePair<string, double>(studentMark.Key, studentMark.Value));
-                    counterForPrinted++;
-                }
             }
         }
 
@@ -61,6 +43,25 @@ namespace BashSoft.Repository
         private static bool PoorFilter(double mark)
         {
             return mark < 3.5;
+        }
+
+        private void FilterAndTake(IDictionary<string, double> studentsWithMarks, Predicate<double> givenFilter,
+                            int studentsToTake)
+        {
+            var counterForPrinted = 0;
+            foreach (var studentMark in studentsWithMarks)
+            {
+                if (counterForPrinted == studentsToTake)
+                {
+                    break;
+                }
+
+                if (givenFilter(studentMark.Value))
+                {
+                    OutputWriter.PrintStudent(new KeyValuePair<string, double>(studentMark.Key, studentMark.Value));
+                    counterForPrinted++;
+                }
+            }
         }
     }
 }

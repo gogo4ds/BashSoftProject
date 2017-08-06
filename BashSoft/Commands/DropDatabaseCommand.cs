@@ -1,10 +1,7 @@
-﻿using BashSoft.Contracts;
-using BashSoft.IO;
-using BashSoft.StaticData;
-using BashSoft.Utilities;
-
-namespace BashSoft.Commands
+﻿namespace BashSoft.Commands
 {
+    using BashSoft.Contracts;
+    using BashSoft.IO;
     using Exceptions;
 
     internal class DropDatabaseCommand : Command

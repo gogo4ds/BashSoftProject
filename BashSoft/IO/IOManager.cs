@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using BashSoft.Contracts;
-using BashSoft.Exceptions;
-using BashSoft.StaticData;
-using BashSoft.Utilities;
-
-namespace BashSoft.IO
+﻿namespace BashSoft.IO
 {
-    public class IOManager : IDirectoryManager
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using BashSoft.Contracts;
+    using BashSoft.Exceptions;
+    using BashSoft.StaticData;
+
+    public class IoManager : IDirectoryManager
     {
         public void TraverseDirectory(int depth)
         {
             OutputWriter.WriteEmptyLine();
-            int initialIdentation = SessionData.CurrentPath.Split('\\').Length;
+            var initialIdentation = SessionData.CurrentPath.Split('\\').Length;
             var subfolders = new Queue<string>();
             subfolders.Enqueue(SessionData.CurrentPath);
 
@@ -33,8 +32,8 @@ namespace BashSoft.IO
                 {
                     foreach (var file in Directory.GetFiles(currentPath))
                     {
-                        int indexOfLastSlash = file.LastIndexOf('\\');
-                        string fileName = file.Substring(indexOfLastSlash);
+                        var indexOfLastSlash = file.LastIndexOf('\\');
+                        var fileName = file.Substring(indexOfLastSlash);
                         OutputWriter.WriteMessageOnNewLine(new string('-', indexOfLastSlash) + fileName);
                     }
 
@@ -56,22 +55,21 @@ namespace BashSoft.IO
             {
                 try
                 {
-                    string currentPath = SessionData.CurrentPath;
-                    int indexOfLastSlash = currentPath.LastIndexOf('\\');
-                    string newPath = currentPath.Substring(0, indexOfLastSlash);
+                    var currentPath = SessionData.CurrentPath;
+                    var indexOfLastSlash = currentPath.LastIndexOf('\\');
+                    var newPath = currentPath.Substring(0, indexOfLastSlash);
                     SessionData.CurrentPath = newPath;
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    //throw new ArgumentOutOfRangeException("indexOfLastSlash", ExceptionMessages.InvalidDestination);
                     throw new ArgumentOutOfRangeException(ExceptionMessages.UnableToGoHigherInThePartitionHierarchy);
                 }
             }
             else
             {
-                string currentPath = SessionData.CurrentPath;
+                var currentPath = SessionData.CurrentPath;
                 currentPath += "\\" + relativePath;
-                ChangeCurrentDirectoryAbsolute(currentPath);
+                this.ChangeCurrentDirectoryAbsolute(currentPath);
             }
         }
 
@@ -87,7 +85,7 @@ namespace BashSoft.IO
 
         public void CreateDirectoryInCurrentFolder(string name)
         {
-            string path = GetCurrentDirectoryPath() + "\\" + name;
+            var path = this.GetCurrentDirectoryPath() + "\\" + name;
             try
             {
                 Directory.CreateDirectory(path);

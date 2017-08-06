@@ -1,37 +1,39 @@
-﻿using BashSoft.Contracts;
-
-namespace BashSoft.Commands
+﻿namespace BashSoft.Commands
 {
-    using Exceptions;
+    using BashSoft.Contracts;
+    using BashSoft.Exceptions;
 
     internal class ShowCourseCommand : Command
     {
-        public ShowCourseCommand(string input, string[] data, IContentComparer judge, IDatabase repository, IDirectoryManager inputOutputIoManager)
+        public ShowCourseCommand(string input, string[] data, IContentComparer judge, IDatabase repository,
+            IDirectoryManager inputOutputIoManager)
             : base(input, data, judge, repository, inputOutputIoManager)
         {
         }
 
         public override void Execute()
         {
-            switch (Data.Length)
+            switch (this.Data.Length)
             {
                 case 2:
                     {
-                        string courseName = Data[1];
-                        Repository.GetAllStudentsFromCourse(courseName);
+                        var courseName = this.Data[1];
+                        this.Repository.GetAllStudentsFromCourse(courseName);
                     }
+
                     break;
 
                 case 3:
                     {
-                        string courseName = Data[1];
-                        string username = Data[2];
-                        Repository.GetStudentScoresFromCourse(courseName, username);
+                        var courseName = this.Data[1];
+                        var username = this.Data[2];
+                        this.Repository.GetStudentScoresFromCourse(courseName, username);
                     }
+
                     break;
 
                 default:
-                    throw new InvalidCommandParametersCountException(Data[0]);
+                    throw new InvalidCommandParametersCountException(this.Data[0]);
             }
         }
     }

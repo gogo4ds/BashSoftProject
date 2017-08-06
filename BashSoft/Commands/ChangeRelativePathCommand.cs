@@ -1,8 +1,7 @@
-﻿using BashSoft.Contracts;
-
-namespace BashSoft.Commands
+﻿namespace BashSoft.Commands
 {
-    using Utilities;
+    using BashSoft.Contracts;
+    using BashSoft.Utilities;
 
     public class ChangeRelativePathCommand : Command
     {
@@ -13,10 +12,13 @@ namespace BashSoft.Commands
 
         public override void Execute()
         {
-            if (!CommandValidator.IsCommandValidLenght(Data, 2)) return;
+            if (!CommandValidator.IsCommandValidLenght(this.Data, 2))
+            {
+                return;
+            }
 
-            string relPath = Data[1];
-            InputOutputManager.ChangeCurrentDirectoryRelative(relPath);
+            var relPath = this.Data[1];
+            this.InputOutputManager.ChangeCurrentDirectoryRelative(relPath);
         }
     }
 }
