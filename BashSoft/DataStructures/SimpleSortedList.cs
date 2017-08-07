@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using BashSoft.Contracts;
 
@@ -35,10 +36,51 @@
         {
         }
 
+        public int Capacity => this.innerCollection.Length;
+
         public int Size { get; private set; }
+
+        public bool Remove(T element)
+        {
+            if (element == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var hasBeenRemoved = false;
+            var indexOfRemovedElement = 0;
+            for (int i = 0; i < this.Size; i++)
+            {
+                if (this.innerCollection[i].Equals(element))
+                {
+                    indexOfRemovedElement = i;
+                    this.innerCollection[i] = default(T);
+                    hasBeenRemoved = true;
+                    break;
+                }
+            }
+
+            if (hasBeenRemoved)
+            {
+                for (int i = indexOfRemovedElement; i < this.Size - 1; i++)
+                {
+                    this.innerCollection[i] = this.innerCollection[i + 1];
+                }
+
+                this.innerCollection[this.Size - 1] = default(T);
+                this.Size--;
+            }
+
+            return hasBeenRemoved;
+        }
 
         public void Add(T element)
         {
+            if (element == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             if (this.innerCollection.Length == this.Size)
             {
                 this.Resize();
@@ -51,6 +93,11 @@
 
         public void AddAll(ICollection<T> collection)
         {
+            if (collection == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             if (this.Size + collection.Count >= this.innerCollection.Length)
             {
                 this.MultiResize(collection);
@@ -75,15 +122,20 @@
 
         public string JoinWith(string joiner)
         {
+            if (joiner == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             var builder = new StringBuilder();
 
-            foreach (var element in this)
+            foreach (var element in this.innerCollection.Take(this.Size))
             {
                 builder.Append(element);
                 builder.Append(joiner);
             }
 
-            builder.Remove(builder.Length - 1, 1);
+            builder.Remove(builder.Length - joiner.Length, joiner.Length);
             return builder.ToString();
         }
 
