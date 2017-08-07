@@ -1,13 +1,23 @@
 ﻿namespace BashSoft.Commands
 {
+    using BashSoft.Attributes;
     using BashSoft.Contracts;
     using BashSoft.Utilities;
 
+    [Alias("mkdir")]
     public class MakeDirectoryCommand : Command
     {
-        public MakeDirectoryCommand(string input, string[] data, IContentComparer judge, IDatabase repository,
-            IDirectoryManager inputOutputIoManager)
-            : base(input, data, judge, repository, inputOutputIoManager)
+        [Inject]
+        private IDirectoryManager inputOutputIoManager;
+
+        [Inject]
+        private IContentComparer judge;
+
+        [Inject]
+        private IDatabase repository;
+
+        public MakeDirectoryCommand(string input, string[] data)
+            : base(input, data)
         {
         }
 
@@ -19,9 +29,8 @@
             }
 
             var folderName = this.Data[1];
-            this.InputOutputManager.CreateDirectoryInCurrentFolder(folderName);
-            var openFileCmd = new OpenFileCommand(this.Input, this.Data, this.Judge, this.Repository,
-                this.InputOutputManager);
+            this.inputOutputIoManager.CreateDirectoryInCurrentFolder(folderName);
+            var openFileCmd = new OpenFileCommand(this.Input, this.Data);
             openFileCmd.Execute();
         }
     }

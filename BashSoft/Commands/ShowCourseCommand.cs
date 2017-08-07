@@ -1,13 +1,17 @@
 ﻿namespace BashSoft.Commands
 {
+    using BashSoft.Attributes;
     using BashSoft.Contracts;
     using BashSoft.Exceptions;
 
+    [Alias("show")]
     internal class ShowCourseCommand : Command
     {
-        public ShowCourseCommand(string input, string[] data, IContentComparer judge, IDatabase repository,
-            IDirectoryManager inputOutputIoManager)
-            : base(input, data, judge, repository, inputOutputIoManager)
+        [Inject]
+        private IDatabase repository;
+
+        public ShowCourseCommand(string input, string[] data)
+            : base(input, data)
         {
         }
 
@@ -18,7 +22,7 @@
                 case 2:
                     {
                         var courseName = this.Data[1];
-                        this.Repository.GetAllStudentsFromCourse(courseName);
+                        this.repository.GetAllStudentsFromCourse(courseName);
                     }
 
                     break;
@@ -27,7 +31,7 @@
                     {
                         var courseName = this.Data[1];
                         var username = this.Data[2];
-                        this.Repository.GetStudentScoresFromCourse(courseName, username);
+                        this.repository.GetStudentScoresFromCourse(courseName, username);
                     }
 
                     break;

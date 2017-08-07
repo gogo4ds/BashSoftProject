@@ -9,13 +9,10 @@
         private string[] data;
         private string input;
 
-        protected Command(string input, string[] data, IContentComparer judge, IDatabase repository, IDirectoryManager inputOutputIoManager)
+        protected Command(string input, string[] data)
         {
             this.Input = input;
             this.Data = data;
-            this.Judge = judge;
-            this.Repository = repository;
-            this.InputOutputManager = inputOutputIoManager;
         }
 
         protected string Input
@@ -45,12 +42,6 @@
                 this.data = value;
             }
         }
-
-        protected IContentComparer Judge { get; }
-
-        protected IDatabase Repository { get; }
-
-        protected IDirectoryManager InputOutputManager { get; }
 
         public abstract void Execute();
     }

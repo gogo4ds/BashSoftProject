@@ -1,15 +1,19 @@
 ﻿namespace BashSoft.Commands
 {
+    using BashSoft.Attributes;
     using BashSoft.Contracts;
     using BashSoft.IO;
     using BashSoft.StaticData;
     using BashSoft.Utilities;
 
+    [Alias("order")]
     internal class PrintOrderedStudentsCommand : Command
     {
-        public PrintOrderedStudentsCommand(string input, string[] data, IContentComparer judge, IDatabase repository,
-            IDirectoryManager inputOutputIoManager)
-            : base(input, data, judge, repository, inputOutputIoManager)
+        [Inject]
+        private IDatabase repository;
+
+        public PrintOrderedStudentsCommand(string input, string[] data)
+            : base(input, data)
         {
         }
 
@@ -35,14 +39,14 @@
             {
                 if (takeQuantity == "all")
                 {
-                    this.Repository.OrderAndTake(courseName, comparison);
+                    this.repository.OrderAndTake(courseName, comparison);
                 }
                 else
                 {
                     int studentsToTake;
                     if (int.TryParse(takeQuantity, out studentsToTake))
                     {
-                        this.Repository.FilterAndTake(courseName, comparison, studentsToTake);
+                        this.repository.FilterAndTake(courseName, comparison, studentsToTake);
                     }
                     else
                     {

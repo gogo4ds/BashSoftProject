@@ -2,16 +2,20 @@
 {
     using System;
     using System.Collections.Generic;
+    using BashSoft.Attributes;
     using BashSoft.Contracts;
     using BashSoft.Exceptions;
     using BashSoft.IO;
     using BashSoft.Utilities;
 
+    [Alias("display")]
     public class DisplayCommand : Command
     {
-        public DisplayCommand(string input, string[] data, IContentComparer judge, IDatabase repository,
-            IDirectoryManager inputOutputIoManager)
-            : base(input, data, judge, repository, inputOutputIoManager)
+        [Inject]
+        private IDatabase repository;
+
+        public DisplayCommand(string input, string[] data)
+            : base(input, data)
         {
         }
 
@@ -28,13 +32,13 @@
             if (entityToDisplay.Equals("students", StringComparison.OrdinalIgnoreCase))
             {
                 var studentComparer = this.CreateStudentComparator(sortType);
-                var list = this.Repository.GetAllStudentsSorted(studentComparer);
+                var list = this.repository.GetAllStudentsSorted(studentComparer);
                 OutputWriter.WriteMessageOnNewLine(list.JoinWith(Environment.NewLine));
             }
             else if (entityToDisplay.Equals("courses", StringComparison.OrdinalIgnoreCase))
             {
                 var courseComparer = this.CreateCourseComparator(sortType);
-                var list = this.Repository.GetAllCoursesSorted(courseComparer);
+                var list = this.repository.GetAllCoursesSorted(courseComparer);
                 OutputWriter.WriteMessageOnNewLine(list.JoinWith(Environment.NewLine));
             }
             else
